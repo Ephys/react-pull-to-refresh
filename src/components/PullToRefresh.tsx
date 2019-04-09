@@ -9,6 +9,7 @@ export interface PullToRefreshProps {
     onRefresh: () => Promise<any>;
     triggerHeight?: number | "auto";
     backgroundColor?: string;
+    touchOnly?: boolean;
 }
 
 export interface PullToRefreshState {
@@ -60,9 +61,12 @@ export class PullToRefresh extends React.Component<PullToRefreshProps, PullToRef
         this.container.addEventListener("touchstart", this.onTouchStart);
         this.container.addEventListener("touchmove", this.onTouchMove);
         this.container.addEventListener("touchend", this.onEnd);
-        this.container.addEventListener("mousedown", this.onTouchStart);
-        this.container.addEventListener("mousemove", this.onTouchMove);
-        this.container.addEventListener("mouseup", this.onEnd);
+
+        if (!this.props.touchOnly) {
+            this.container.addEventListener("mousedown", this.onTouchStart);
+            this.container.addEventListener("mousemove", this.onTouchMove);
+            this.container.addEventListener("mouseup", this.onEnd);
+        }
     }
 
     public componentWillUnmount(): void {
